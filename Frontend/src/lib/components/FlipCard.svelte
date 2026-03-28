@@ -1,0 +1,221 @@
+﻿<script lang="ts">
+  import { onMount } from 'svelte';
+
+  // Props usando runes
+  const {
+    value = '',
+    result = 'incorrect',
+    label = '',
+    delay = 0
+  }: {
+    value?: string | string[];
+    result?: 'correct' | 'partial' | 'incorrect' | 'higher' | 'lower';
+    label?: string;
+    delay?: number;
+  } = $props();
+
+  let flipped = $state(false);
+
+  // Props derivadas para lógica de presentación
+  const displayValue = $derived(
+    Array.isArray(value)
+      ? value.join(', ')
+      : String(value ?? '—')
+  );
+
+  const colorClass = $derived(
+    ({
+      correct:   'card--correct',
+      partial:   'card--partial',
+      incorrect: 'card--incorrect',
+      higher:    'card--directional',
+      lower:     'card--directional',
+    } as const)[result] ?? 'card--incorrect'
+  );
+
+  const arrow = $derived(
+    result === 'higher' ? '↑' :
+    result === 'lower'  ? '↓' :
+    null
+  );
+
+  onMount(() => {
+    const timer = setTimeout(() => {
+      flipped = true;
+    }, delay);
+
+    return () => clearTimeout(timer);
+  });
+</script>
+
+<div class="flip-wrapper" style="--flip-delay: {delay}ms">
+  <div class="flip-inner" class:flipped={flipped}>
+    <!-- Cara trasera -->
+    <div class="flip-face flip-back">
+      <div class="rune-symbol">✦</div>
+    </div>
+
+    <!-- Cara frontal -->
+    <div class="flip-face flip-front {colorClass}">
+      <span class="card-label">{label}</span>
+
+      <span class="card-value">
+        {displayValue}
+        {#if arrow}
+          <span class="card-arrow">{arrow}</span>
+        {/if}
+      </span>
+
+      {#if result === 'correct'}
+        <span class="card-glow"></span>
+      {/if}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Variables de tema ── */
+  :root {
+    --clover-gold:    #c9a84c;
+    --clover-green:   #1a472a;
+    --clover-dark:    #0d1117;
+    --clover-surface: #161b22;
+    --clover-border:  #30363d;
+    --card-correct:   #1a6b3c;
+    --card-partial:   #7a5c00;
+    --card-incorrect: #6b1a1a;
+    --card-direction: #1a3a6b;
+    --text-primary:   #e6edf3;
+    --text-muted:     #8b949e;
+  }
+
+  .flip-wrapper {
+    perspective: 800px;
+    width: 100%;
+    min-width: 80px;
+  }
+
+  .flip-inner {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  .flip-inner.flipped {
+    transform: rotateY(180deg);
+  }
+
+  /* ── Cara común ── */
+  .flip-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    border: 1px solid var(--clover-border);
+  }
+
+  /* ── Cara trasera (grimorium sin revelar) ── */
+  .flip-back {
+    background:
+      radial-gradient(ellipse at center, #1c1f26 0%, #0d1117 100%);
+    border-color: var(--clover-gold);
+  }
+
+  .rune-symbol {
+    font-size: 1.6rem;
+    color: var(--clover-gold);
+    opacity: 0.6;
+    animation: pulse-rune 2s ease-in-out infinite;
+    text-shadow: 0 0 12px var(--clover-gold);
+  }
+
+  @keyframes pulse-rune {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50%       { opacity: 0.9; transform: scale(1.1); }
+  }
+
+  /* ── Cara delantera (resultado) ── */
+  .flip-front {
+    transform: rotateY(180deg);
+    flex-direction: column;
+    padding: 8px 10px;
+  }
+
+  .card-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(230, 237, 243, 0.55);
+    font-family: 'Cinzel', serif;
+    white-space: nowrap;
+  }
+
+  .card-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .card-arrow {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #7dd3fc;
+  }
+
+  /* ── Colores de resultado ── */
+  .card--correct {
+    background: linear-gradient(135deg, #0f3d22 0%, #1a6b3c 60%, #0f3d22 100%);
+    border-color: #2ea555;
+    box-shadow: 0 0 16px rgba(46, 165, 85, 0.35) inset,
+                0 0 8px  rgba(46, 165, 85, 0.2);
+  }
+
+  .card--partial {
+    background: linear-gradient(135deg, #3d2e00 0%, #7a5c00 60%, #3d2e00 100%);
+    border-color: #c9a84c;
+    box-shadow: 0 0 16px rgba(201, 168, 76, 0.3) inset;
+  }
+
+  .card--incorrect {
+    background: linear-gradient(135deg, #2a0a0a 0%, #4a1515 60%, #2a0a0a 100%);
+    border-color: #6b1a1a;
+    box-shadow: 0 0 12px rgba(107, 26, 26, 0.3) inset;
+  }
+
+  .card--directional {
+    background: linear-gradient(135deg, #0a1628 0%, #1a3a6b 60%, #0a1628 100%);
+    border-color: #2563eb;
+    box-shadow: 0 0 14px rgba(37, 99, 235, 0.3) inset;
+  }
+
+  /* ── Glow especial al acertar ── */
+  .card-glow {
+    position: absolute;
+    inset: -2px;
+    border-radius: 12px;
+    background: transparent;
+    border: 2px solid #2ea555;
+    animation: win-glow 1.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes win-glow {
+    0%, 100% { box-shadow: 0 0 8px 2px rgba(46, 165, 85, 0.4); }
+    50%       { box-shadow: 0 0 20px 6px rgba(46, 165, 85, 0.7); }
+  }
+</style>
