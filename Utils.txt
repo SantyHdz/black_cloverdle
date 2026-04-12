@@ -1,0 +1,3 @@
+﻿mongodb+srv://trollearvpn156_db_user:<db_password>@cluster0.gddax79.mongodb.net/?appName=Cluster0
+
+##Usar despues para crear una instancia en un Cluster de MongoDB donde sse cunta con 512MB
