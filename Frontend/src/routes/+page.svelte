@@ -195,42 +195,43 @@
 
   <!-- ── Leyenda de colores ─────────────────────────────────────────────────── -->
   <div class="legend-wrapper">
-    <button class="legend-toggle" onclick={() => (showLegend = !showLegend)}>
-      {showLegend ? '▲' : '▼'} Indicadores de color
-    </button>
+  <button class="col-head" onclick={() => (showLegend = !showLegend)}>
+    <span class="col-head-label">Indicadores de color</span>
+    <span class="col-head-arrow" class:open={showLegend}>▼</span>
+  </button>
 
-    {#if showLegend}
-      <div class="legend" role="list">
-        <div class="legend-item" role="listitem">
-          <div class="legend-swatch swatch--correct"></div>
-          <div>
-            <strong>Correcto</strong>
-            <span>El valor coincide exactamente</span>
-          </div>
-        </div>
-        <div class="legend-item" role="listitem">
-          <div class="legend-swatch swatch--partial"></div>
-          <div>
-            <strong>Parcial</strong>
-            <span>Comparte al menos un valor (listas)</span>
-          </div>
-        </div>
-        <div class="legend-item" role="listitem">
-          <div class="legend-swatch swatch--incorrect"></div>
-          <div>
-            <strong>Incorrecto</strong>
-            <span>No hay coincidencia</span>
-          </div>
-        </div>
-        <div class="legend-item" role="listitem">
-          <div class="legend-swatch swatch--directional"></div>
-          <div>
-            <strong>↑ / ↓</strong>
-            <span>El objetivo es mayor o menor / anterior o posterior</span>
-          </div>
+  {#if showLegend}
+    <div class="legend" role="list">
+      <div class="legend-item" role="listitem">
+        <div class="legend-swatch swatch--correct"></div>
+        <div class="legend-item-text">
+          <strong>Correcto</strong>
+          <span>El valor coincide exactamente</span>
         </div>
       </div>
-    {/if}
-  </div>
+      <div class="legend-item" role="listitem">
+        <div class="legend-swatch swatch--partial"></div>
+        <div class="legend-item-text">
+          <strong>Parcial</strong>
+          <span>Comparte al menos un valor (listas)</span>
+        </div>
+      </div>
+      <div class="legend-item" role="listitem">
+        <div class="legend-swatch swatch--incorrect"></div>
+        <div class="legend-item-text">
+          <strong>Incorrecto</strong>
+          <span>No hay coincidencia</span>
+        </div>
+      </div>
+      <div class="legend-item" role="listitem">
+        <div class="legend-swatch swatch--directional"></div>
+        <div class="legend-item-text">
+          <strong>↑ / ↓</strong>
+          <span>El objetivo es mayor/menor o anterior/posterior</span>
+        </div>
+      </div>
+    </div>
+  {/if}
+</div>
 
 </main>

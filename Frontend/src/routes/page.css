@@ -439,12 +439,21 @@ body {
 }
 
 .legend {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+
+  flex-direction: row;
+
+  flex-wrap: nowrap;
+
   gap: 10px;
+
   width: 100%;
+
+  overflow-x: auto;
+
   animation: fade-in .2s ease;
 }
+
 
 .legend-item {
   display: flex;
