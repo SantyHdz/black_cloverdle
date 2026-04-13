@@ -1,5 +1,6 @@
 ﻿<script lang="ts">
 	import FlipCard from './FlipCard.svelte';
+	import { slide, fade } from 'svelte/transition';
 	import './GuessRow.css';
 
 	/**
@@ -42,9 +43,9 @@
 	const ATTEMPT_EXTRA = 0;
 </script>
 
-<div class="guess-row" class:guess-row--win={comparison?.is_correct}>
+<div class="guess-row" class:guess-row--win={comparison?.is_correct} in:slide={{ duration: 400, axis: 'y' }}>
 	<!-- Número de intento -->
-	<div class="attempt-badge">
+	<div class="attempt-badge" in:fade={{ duration: 300, delay: 100 }}>
 		<span>{attemptNumber}</span>
 	</div>
 
@@ -62,7 +63,7 @@
 	</div>
 
 	{#if comparison?.is_correct}
-		<div class="win-banner">
+		<div class="win-banner" in:scale={{ duration: 500, delay: 600 }}>
 			<span class="win-rune">✦</span>
 			¡Correcto!
 			<span class="win-rune">✦</span>

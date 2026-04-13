@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { fade, slide, scale } from 'svelte/transition';
   import './page.css';
   import GuessInput from '$lib/components/GuessInput.svelte';
   import GuessRow from '$lib/components/GuessRow.svelte';
@@ -100,17 +101,17 @@
 <main class="main">
 
   <!-- ── Cabecera ─────────────────────────────────────────────────────────── -->
-  <header class="header">
-    <div class="header-rune left" aria-hidden="true">❖</div>
+  <header class="header" in:slide={{ duration: 600, axis: 'y' }}>
+    <div class="header-rune left" aria-hidden="true" in:fade={{ duration: 800, delay: 200 }}>❖</div>
 
     <div class="header-center">
-      <p class="header-eyebrow">El reto de hoy</p>
-      <h1 class="header-title">
+      <p class="header-eyebrow" in:fade={{ duration: 400, delay: 100 }}>El reto de hoy</p>
+      <h1 class="header-title" in:scale={{ duration: 500, delay: 150 }}>
         <span class="title-black">BLACK</span>
         <span class="title-clover">CLOVER</span>
         <span class="title-dle">DLE</span>
       </h1>
-      <p class="header-sub">
+      <p class="header-sub" in:fade={{ duration: 400, delay: 300 }}>
         Adivina el personaje de hoy
         {#if totalCharacters > 0}
           · <span class="char-count">{totalCharacters} personajes disponibles</span>
@@ -118,11 +119,11 @@
       </p>
     </div>
 
-    <div class="header-rune right" aria-hidden="true">❖</div>
+    <div class="header-rune right" aria-hidden="true" in:fade={{ duration: 800, delay: 400 }}>❖</div>
   </header>
 
   <!-- ── Divisor decorativo ─────────────────────────────────────────────────── -->
-  <div class="divider" aria-hidden="true">
+  <div class="divider" aria-hidden="true" in:slide={{ duration: 500, axis: 'x', delay: 400 }}>
     <span class="divider-line"></span>
     <span class="divider-glyph">✦</span>
     <span class="divider-line"></span>
@@ -130,16 +131,16 @@
 
   <!-- ── Error de conexión ──────────────────────────────────────────────────── -->
   {#if errorMsg}
-    <div class="alert alert--error">
+    <div class="alert alert--error" in:slide={{ duration: 300, axis: 'y' }}>
       <span>⚠</span> {errorMsg}
     </div>
   {/if}
 
   <!-- ── Input de adivinanza (arriba) ───────────────────────────────────────── -->
   {#if !gameOver}
-    <div class="input-area">
+    <div class="input-area" in:fade={{ duration: 500, delay: 500 }}>
       {#if submitError}
-        <p class="submit-error" role="alert">{submitError}</p>
+        <p class="submit-error" role="alert" in:slide={{ duration: 200, axis: 'y' }}>{submitError}</p>
       {/if}
       <GuessInput
         disabled={loading || gameOver}
@@ -147,7 +148,7 @@
         on:guess={handleGuess}
       />
       {#if loading}
-        <p class="loading-hint">Consultando el grimorio...</p>
+        <p class="loading-hint" in:fade={{ duration: 300 }}>Consultando el grimorio...</p>
       {/if}
     </div>
   {/if}
@@ -174,18 +175,18 @@
 
     <!-- ── Pantalla de fin de juego ──────────────────────────────────────── -->
     {#if gameOver}
-      <div class="endgame" class:endgame--win={won} class:endgame--lose={!won}>
+      <div class="endgame" class:endgame--win={won} class:endgame--lose={!won} in:scale={{ duration: 600, delay: 200 }}>
         {#if won}
           <div class="endgame-icon">✦</div>
-          <h2 class="endgame-title">¡Grimorio Descubierto!</h2>
-          <p class="endgame-msg">
+          <h2 class="endgame-title" in:fade={{ duration: 400, delay: 400 }}>¡Personaje Descubierto!</h2>
+          <p class="endgame-msg" in:fade={{ duration: 400, delay: 500 }}>
             Lo lograste en <strong>{guesses.length}</strong>
             {guesses.length === 1 ? 'intento' : 'intentos'}.
           </p>
         {:else}
-          <div class="endgame-icon" style="color:#a83232">☠</div>
-          <h2 class="endgame-title" style="color:#c45555">El mago escapó...</h2>
-          <p class="endgame-msg">¡Sigue intentando! El personaje era:</p>
+          <div class="endgame-icon" style="color:#a83232" in:fade={{ duration: 300 }}>☠</div>
+          <h2 class="endgame-title" style="color:#c45555" in:fade={{ duration: 400, delay: 200 }}>El mago escapó...</h2>
+          <p class="endgame-msg" in:fade={{ duration: 400, delay: 300 }}>¡Sigue intentando! El personaje era:</p>
         {/if}
       </div>
     {/if}

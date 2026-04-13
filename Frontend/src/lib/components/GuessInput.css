@@ -6,6 +6,7 @@
 
 .guess-input-root {
   position: relative;
+  z-index: 10000;
   width: 100%;
   max-width: 640px;
   font-family: 'Crimson Pro', serif;
@@ -120,16 +121,16 @@ input:disabled {
 /* ── Dropdown ── */
 .dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 10px);
   left: 0;
   right: 0;
   background: #0f1318;
   border: 1px solid #c9a84c66;
   border-radius: 10px;
   overflow: hidden;
-  z-index: 100;
+  z-index: 10001;
   animation: dropdown-in 0.15s ease;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(201, 168, 76, 0.15);
 }
 
 @keyframes dropdown-in {

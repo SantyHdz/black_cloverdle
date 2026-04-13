@@ -47,6 +47,14 @@
 
     return () => clearTimeout(timer);
   });
+
+  let showSparkle = $state(false);
+
+  $effect(() => {
+    if (flipped && result === 'correct') {
+      setTimeout(() => showSparkle = true, 1200);
+    }
+  });
 </script>
 
 <div class="flip-wrapper" style="--flip-delay: {delay}ms">
@@ -72,4 +80,11 @@
       {/if}
     </div>
   </div>
+  {#if showSparkle}
+    <div class="sparkle-burst" aria-hidden="true">
+      {#each [0,60,120,180,240,300] as deg}
+        <span style="--deg:{deg}deg" class="sparkle-dot"></span>
+      {/each}
+    </div>
+  {/if}
 </div>

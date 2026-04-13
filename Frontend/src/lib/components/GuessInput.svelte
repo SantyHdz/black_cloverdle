@@ -1,5 +1,6 @@
 ﻿<script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
+  import { fade, slide } from 'svelte/transition';
   import './GuessInput.css';
 
   //Props en svelte usando runes
@@ -152,8 +153,8 @@
 
   <!-- Dropdown de sugerencias -->
   {#if open && suggestions.length > 0}
-    <div class="dropdown" bind:this={dropdownEl} role="listbox">
-      {#each suggestions as name, i}
+    <div class="dropdown" bind:this={dropdownEl} role="listbox" in:slide={{ duration: 200, axis: 'y' }}>
+      {#each suggestions as name, i (name)}
         <button
           class="suggestion"
           class:suggestion--active={i === activeIndex}
@@ -161,6 +162,7 @@
           aria-selected={i === activeIndex}
           onmousedown={(e) => { e.preventDefault(); selectSuggestion(name); }}
           onmouseenter={() => (activeIndex = i)}
+          in:fade={{ duration: 100, delay: i * 30 }}
         >
           <span class="suggestion-rune">✦</span>
           <span class="suggestion-name">{name}</span>
