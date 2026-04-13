@@ -1,4 +1,4 @@
-﻿#No suelo comentar codigo alejo JAJAJAJAJAJA considerate afortunado te amo preciosin JAJAJAJA XD
+﻿#No suelo comentar codigo alejo
 from motor.motor_asyncio import AsyncIOMotorClient
 # nuestro string
 MONGO_URI = "mongodb+srv://admin:santilejo123@cluster0.gddax79.mongodb.net/?retryWrites=true&w=majority"
