@@ -13,6 +13,7 @@ from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
 
 from data_loader import load_characters, get_character_by_name, get_unique_values
+from routes.guess import router as guess_router
 from logic import (
     get_daily_character,
     get_autocomplete_suggestions,
@@ -28,6 +29,8 @@ app = FastAPI(
     description="Backend para el juego Black Cloverdle — Módulo 1: Adivina el Personaje",
     version="1.0.0",
 )
+
+app.include_router(guess_router)
 
 app.add_middleware(
     CORSMiddleware,
