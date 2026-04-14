@@ -95,19 +95,44 @@ async def root():
 
 # ── Personaje diario ────────────────────────────────────────────────────────
 
-@app.get("/daily", tags=["Módulo 1"], summary="Personaje del día (sin spoilers)")
+@app.get(
+    "/daily",
+    tags=["Módulo 1"],
+    summary="Personaje del día (sin spoilers)"
+)
 async def get_daily():
     """
     Devuelve metadata del reto diario SIN revelar el personaje objetivo.
+    Incluye pistas desbloqueables.
     """
+
     characters = await load_characters()
+
     if not characters:
-        raise HTTPException(status_code=503, detail="No se pudieron cargar los personajes.")
+        raise HTTPException(
+            status_code=503,
+            detail="No se pudieron cargar los personajes."
+        )
+
+    daily_character = get_daily_character(characters)
+
+    if daily_character is None:
+        raise HTTPException(
+            status_code=503,
+            detail="No se pudo determinar el personaje del día."
+        )
 
     return {
+
+        # ya existente
         "total_characters": len(characters),
+
+        "arco": daily_character.get("arco"),
+        "reino": daily_character.get("reino"),
+
         "message": "¡Adivina el personaje de hoy!",
     }
+
 
 
 @app.get("/daily/reveal", tags=["Debug"], summary="[DEBUG] Revela el personaje del día")

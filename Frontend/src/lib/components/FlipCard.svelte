@@ -7,12 +7,14 @@
     value = '',
     result = 'incorrect',
     label = '',
-    delay = 0
+    delay = 0,
+    isImage = false
   }: {
     value?: string | string[];
     result?: 'correct' | 'partial' | 'incorrect' | 'higher' | 'lower';
     label?: string;
     delay?: number;
+    isImage?: boolean;
   } = $props();
 
   let flipped = $state(false);
@@ -59,32 +61,71 @@
 
 <div class="flip-wrapper" style="--flip-delay: {delay}ms">
   <div class="flip-inner" class:flipped={flipped}>
+
     <!-- Cara trasera -->
     <div class="flip-face flip-back">
       <div class="rune-symbol">✦</div>
     </div>
 
     <!-- Cara frontal -->
-    <div class="flip-face flip-front {colorClass}">
-      <span class="card-label">{label}</span>
+    <div class="flip-face flip-front {isImage ? '' : colorClass}">
 
-      <span class="card-value">
-        {displayValue}
-        {#if arrow}
-          <span class="card-arrow">{arrow}</span>
-        {/if}
-      </span>
+      <!-- Label solo si NO es imagen -->
+      {#if !isImage}
+        <span class="card-label">{label}</span>
+      {/if}
+
+      <!-- CAMBIO: Si es imagen -->
+      {#if isImage}
+
+        <div class="card-image-wrapper">
+
+          <img
+            src={displayValue}
+            alt={label}
+            class="card-image"
+            title={label}
+            on:error={(e) => {
+              e.currentTarget.src =
+                "/images/characters/default.webp";
+            }}
+          />
+
+        </div>
+
+      {:else}
+
+        <!-- Valor normal -->
+        <span class="card-value">
+          {displayValue}
+
+          {#if arrow}
+            <span class="card-arrow">
+              {arrow}
+            </span>
+          {/if}
+
+        </span>
+
+      {/if}
 
       {#if result === 'correct'}
         <span class="card-glow"></span>
       {/if}
+
     </div>
+
   </div>
+
   {#if showSparkle}
     <div class="sparkle-burst" aria-hidden="true">
       {#each [0,60,120,180,240,300] as deg}
-        <span style="--deg:{deg}deg" class="sparkle-dot"></span>
+        <span
+          style="--deg:{deg}deg"
+          class="sparkle-dot">
+        </span>
       {/each}
     </div>
   {/if}
+
 </div>
