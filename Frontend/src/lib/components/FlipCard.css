@@ -176,3 +176,41 @@
   from { transform: rotate(var(--deg)) translateY(0) scale(1); opacity: 1; }
   to   { transform: rotate(var(--deg)) translateY(var(--r)) scale(0); opacity: 0; }
 }
+
+.card-image-wrapper {
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0;
+	overflow: hidden;
+}
+
+/* Imagen personaje */
+.card-image {
+	width: 100%;
+	height: 100%;
+
+	object-fit: cover;
+
+	border-radius: 8px;
+
+	transition: transform 0.2s ease,
+				filter 0.2s ease;
+}
+
+/* Hover visual */
+.card-image:hover {
+	transform: scale(1.05);
+	filter: brightness(1.1);
+	cursor: pointer;
+}
+
+/* Tooltip visual (opcional futuro) */
+.card-image[title] {
+	position: relative;
+}
+

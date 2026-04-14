@@ -5,7 +5,7 @@
   import GuessInput from '$lib/components/GuessInput.svelte';
   import GuessRow from '$lib/components/GuessRow.svelte';
 
-  // ── Estado del juego ──────────────────────────────────────────────────────
+  // ── Estado del juego ─────────────────────────────────────
   let guesses = $state<any[]>([]);
   let gameOver = $state(false);
   let won = $state(false);
@@ -15,20 +15,53 @@
   let loading = $state(false);
   let showLegend = $state(false);
 
-  // ── Al montar: obtener metadata del reto diario ───────────────────────────
+  // ── NUEVO: pistas ────────────────────────────────────────
+  let hintArcRevealed = $state(false);
+  let hintCountryRevealed = $state(false);
+
+  // personaje secreto
+  let secretHints = $state({
+    arco: '',
+    reino: ''
+  });
+
+  // ── Obtener metadata + pistas ────────────────────────────
   onMount(async () => {
     try {
       const res  = await fetch('/api/daily');
       const data = await res.json();
+
       totalCharacters = data.total_characters ?? 0;
+
+      secretHints.arco = data.arco ?? '';
+      secretHints.reino = data.reino ?? '';
+
     } catch {
       errorMsg = 'No se pudo conectar con el servidor. ¿Está corriendo el backend?';
     }
   });
 
-  // ── Manejar un intento ────────────────────────────────────────────────────
+  // ── Intentos desbloqueados ───────────────────────────────
+  let arcUnlocked = $derived(guesses.length >= 7);
+  let countryUnlocked = $derived(guesses.length >= 5);
+
+  // ── Click en tarjeta ─────────────────────────────────────
+  function revealArc() {
+    if (arcUnlocked) {
+      hintArcRevealed = true;
+    }
+  }
+
+  function revealCountry() {
+    if (countryUnlocked) {
+      hintCountryRevealed = true;
+    }
+  }
+
+  // ── Manejar intento ──────────────────────────────────────
   async function handleGuess(e: CustomEvent<string>) {
     if (gameOver || loading) return;
+
     submitError = '';
     loading = true;
 
@@ -38,12 +71,13 @@
       const res  = await fetch('/api/guess', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ nombre }),
+        body: JSON.stringify({ nombre }),
       });
+
       const data = await res.json();
 
       if (!data.found) {
-        submitError = `"${nombre}" no existe en la base de datos. Verifica el nombre.`;
+        submitError = `"${nombre}" no existe en la base de datos.`;
         return;
       }
 
@@ -53,6 +87,7 @@
         gameOver = true;
         won = true;
       }
+
     } catch {
       submitError = 'Error al comunicarse con el servidor.';
     } finally {
@@ -60,15 +95,16 @@
     }
   }
 
-  // ── Reiniciar (solo modo debug / desarrollo) ──────────────────────────────
   function resetGame() {
-    guesses    = [];
-    gameOver   = false;
-    won        = false;
-    submitError = '';
+    guesses = [];
+    gameOver = false;
+    won = false;
+    hintArcRevealed = false;
+    hintCountryRevealed = false;
   }
 
 </script>
+
 
 <svelte:head>
   <title>BlackCloverdle — Adivina el Personaje</title>
@@ -153,6 +189,71 @@
       {/if}
     </div>
   {/if}
+
+  <!-- ══════════════════════════════════════════════════════
+     PISTAS DESBLOQUEABLES
+═══════════════════════════════════════════════════════ -->
+
+<div class="hints-container">
+
+  <!-- PISTA REINO -->
+
+  <div
+    class="hint-card"
+    class:locked={!countryUnlocked}
+    onclick={revealCountry}
+  >
+
+    <span class="hint-title">
+      País de origen
+    </span>
+
+    <span class="hint-value">
+
+      {#if !countryUnlocked}
+        Se desbloquea en intento 5
+
+      {:else if hintCountryRevealed}
+        {secretHints.reino}
+
+      {:else}
+         Pulsar para revelar
+      {/if}
+
+    </span>
+
+  </div>
+
+    <!-- PISTA ARCO -->
+
+  <div
+    class="hint-card"
+    class:locked={!arcUnlocked}
+    onclick={revealArc}
+  >
+
+    <span class="hint-title">
+      Primer arco de aparición
+    </span>
+
+    <span class="hint-value">
+
+      {#if !arcUnlocked}
+         Se desbloquea en intento 7
+
+      {:else if hintArcRevealed}
+        {secretHints.arco}
+
+      {:else}
+         Pulsar para revelar
+      {/if}
+
+    </span>
+
+  </div>
+
+</div>
+
 
   <!-- ══ ÁREA DEL JUEGO ══════════════════════════════════════════════════════ -->
   <section class="game-area">
