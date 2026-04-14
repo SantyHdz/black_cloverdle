@@ -1,315 +1,271 @@
-🧙‍♂️ Black Cloverdle
+<div align="center">
 
-Juego tipo Wordle/DLE inspirado en el anime Black Clover, donde los jugadores deben adivinar personajes basándose en sus atributos.
+# ❁ BLACK CLOVERDLE ❁
 
-Este proyecto está basado en la lógica de juegos como Wordle y Narutodle, pero adaptado al universo de Black Clover.
+### *¿Puedes adivinar al mago del día?*
 
-🎮 Descripción del Proyecto
+![Svelte](https://img.shields.io/badge/Svelte-5-FF3E00?style=for-the-badge&logo=svelte&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-Black Cloverdle es un juego web donde el jugador debe adivinar un personaje del anime Black Clover utilizando pistas relacionadas con:
+*Un juego tipo Wordle/DLE inspirado en el universo de [Black Clover](https://es.wikipedia.org/wiki/Black_Clover)*
 
-Nombre
-Género
-Edad
-Altura
-Reino
-Orden mágica
-Tipo de magia
-Arco debut
+</div>
 
-Cada intento muestra información visual:
+---
 
-🟩 Verde → Correcto
-🟨 Amarillo → Parcial
-🟥 Rojo → Incorrecto
-⬆️ ⬇️ → Mayor o menor (altura/arco)
+## ✦ ¿Qué es Black Cloverdle?
 
-El proyecto contará con múltiples modos de juego.
+**Black Cloverdle** es un juego web diario donde el jugador intenta adivinar un personaje del anime **Black Clover** basándose en sus atributos. Cada intento revela pistas visuales mediante tarjetas animadas con efecto flip, al estilo de los populares juegos DLE.
 
-🧩 Módulos del Juego
-🧙‍♂️ Módulo 1 — Adivina el Personaje
+El personaje del día cambia automáticamente cada 24 horas. ¡Sin spoilers hasta que lo adivines!
 
-Modo principal donde el jugador intenta adivinar el personaje usando atributos.
+---
 
-Atributos:
+## 🎮 Cómo jugar
 
-Nombre
-Género
-Atributos secundarios
-Raza
-Altura
-Reino
-Orden
-Tipo de magia
-Arco debut
-💥 Módulo 2 — ¿Quién lanza este hechizo?
+1. **Escribe** el nombre de un personaje en el campo de búsqueda.
+2. **Observa** las tarjetas animadas que revelan la comparación atributo por atributo.
+3. **Usa las pistas de color** para guiar tus siguientes intentos.
+4. **Desbloquea pistas adicionales** conforme avanzas en los intentos.
 
-El jugador ve:
+### Indicadores de resultado
 
-Un GIF borroso
-En blanco y negro
+| Color | Significado |
+|-------|-------------|
+| 🟩 **Verde** | El atributo coincide exactamente |
+| 🟨 **Amarillo** | Coincidencia parcial (en listas como magia o raza) |
+| 🟥 **Rojo** | El atributo no coincide |
+| 🔵 **↑ Azul** | El valor real es **mayor / más tarde** |
+| 🔵 **↓ Azul** | El valor real es **menor / más temprano** |
 
-Cada fallo:
+### Atributos comparados
 
-Mejora la calidad del GIF
-Puede añadirse color como ayuda
+```
+Nombre  ·  Género  ·  Atributos  ·  Raza  ·  Altura  ·  Reino  ·  Orden  ·  Magia  ·  Arco
+```
 
-Objetivo:
+### Pistas desbloqueables
 
-Adivinar el personaje que ejecutó el ataque.
+| Intento | Pista disponible |
+|---------|-----------------|
+| 5 | 🏰 **País de origen** del personaje |
+| 7 | 📖 **Primer arco de aparición** |
 
-🗣️ Módulo 3 — Frases
+---
 
-Se muestra:
+## 🧩 Módulos del juego
 
-Una frase famosa de un personaje.
+El proyecto está diseñado con múltiples modos de juego:
 
-Objetivo:
+| Módulo | Nombre | Estado |
+|--------|--------|--------|
+| 1 | 🧙 **Adivina el Personaje** — modo clásico de atributos | ✅ Disponible |
+| 2 | 💥 **¿Quién lanza este hechizo?** — GIF borroso que mejora con cada fallo | 🔜 Próximamente |
+| 3 | 🗣️ **Frases** — adivina al personaje por su frase célebre | 🔜 Próximamente |
+| 4 | 🧠 **¿Quién es este mago?** — imagen que se revela progresivamente | 🔜 Próximamente |
 
-Adivinar quién la dijo.
+---
 
-🧠 Módulo 4 — ¿Quién es este mago?
+## 🏗️ Arquitectura del proyecto
 
-Se muestra:
-
-Una imagen borrosa del personaje.
-
-Cada fallo:
-
-La imagen se vuelve más nítida.
-
-🧱 Tecnologías Utilizadas
-Backend
-Python 3.10+
-FastAPI
-Uvicorn
-Motor (MongoDB async driver)
-Pydantic
-Frontend
-SvelteKit
-TypeScript
-CSS
-Animaciones personalizadas (Flip Cards)
-Base de Datos
-MongoDB Atlas
-🏗️ Arquitectura del Proyecto
+```
 black_cloverdle/
 │
-├── Backend/
-│   ├── db/
-│   │   └── mongo.py
-│   │
-│   ├── routes/
-│   │   └── characters.py
-│   │
-│   ├── models/
-│   │   └── character.py
-│   │
-│   ├── main.py
-│   └── requirements.txt
+├── 📁 Backend/
+│   ├── 📁 db/
+│   │   └── mongo.py           # Conexión a MongoDB Atlas (Motor async)
+│   ├── 📁 routes/
+│   │   └── guess.py           # Rutas de prueba de conexión
+│   ├── data_loader.py         # Carga y búsqueda de personajes
+│   ├── logic.py               # Lógica de comparación y juego
+│   └── main.py                # FastAPI app + todos los endpoints
 │
-├── Frontend/
-│   ├── src/
-│   │   ├── lib/
-│   │   │   ├── components/
-│   │   │   │   ├── GuessInput.svelte
-│   │   │   │   ├── GuessRow.svelte
-│   │   │   │   └── FlipCard.svelte
-│   │   │   │
-│   │   │   └── api/
-│   │   │       └── api.ts
-│   │   │
-│   │   ├── routes/
-│   │   │   └── +page.svelte
-│   │   │
-│   │   └── app.css
-│   │
-│   ├── package.json
-│   └── vite.config.ts
+├── 📁 Frontend/
+│   └── 📁 src/
+│       ├── 📁 lib/
+│       │   ├── 📁 components/
+│       │   │   ├── GuessInput.svelte   # Input con autocompletado
+│       │   │   ├── GuessRow.svelte     # Fila de intento completa
+│       │   │   └── FlipCard.svelte     # Tarjeta con animación flip
+│       │   └── api.ts                  # Cliente HTTP hacia el backend
+│       └── 📁 routes/
+│           └── +page.svelte            # Página principal del juego
 │
-├── data/
-│   └── characters.json
-│
-├── README.md
-└── .env
+└── 📁 Data/
+    └── personajes.json        # Dataset de personajes de Black Clover
+```
 
-⚙️ Instalación del Proyecto
-1️⃣ Clonar repositorio
-git clone https://github.com/tu-usuario/black_cloverdle.git
+---
 
-cd black_cloverdle
+## 🚀 Instalación y configuración
 
-🧪 Backend Setup
-2️⃣ Crear entorno virtual
+### Requisitos previos
 
-Windows:
+- Python **3.10+**
+- Node.js **20+**
+- Una cuenta en [MongoDB Atlas](https://www.mongodb.com/atlas) (gratuita)
 
+---
+
+### ⚙️ Backend
+
+**1. Crear y activar entorno virtual**
+
+```bash
+# Windows
 python -m venv .venv
-
 .venv\Scripts\activate
 
-
-Linux / Mac:
-
+# Linux / macOS
 python3 -m venv .venv
-
 source .venv/bin/activate
+```
 
-3️⃣ Instalar dependencias
-pip install -r requirements.txt
+**2. Instalar dependencias**
 
+```bash
+pip install fastapi uvicorn motor pydantic python-dotenv
+```
 
-Ejemplo requirements.txt:
+**3. Configurar variables de entorno**
 
-fastapi
-uvicorn
-motor
-pydantic
-python-dotenv
+Crea un archivo `.env` en la raíz del proyecto:
 
-🧬 Configurar MongoDB
-4️⃣ Crear archivo .env
-MONGO_URI=mongodb+srv://usuario:password@cluster.mongodb.net
+```env
+MONGO_URI=mongodb+srv://<usuario>:<password>@cluster0.gddax79.mongodb.net/?retryWrites=true&w=majority
+DATABASE_NAME=blackcloverdle
+```
 
-DATABASE_NAME=black_cloverdle
+**4. Iniciar el servidor**
 
-5️⃣ Configurar conexión Mongo
-
-Archivo:
-
-Backend/db/mongo.py
-
-
-Ejemplo:
-
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-MONGO_URI = os.getenv("MONGO_URI")
-
-client = AsyncIOMotorClient(MONGO_URI)
-
-db = client["black_cloverdle"]
-
-characters = db["characters"]
-
-🚀 Ejecutar Backend
+```bash
 uvicorn Backend.main:app --reload
+```
 
+El servidor arrancará en `http://127.0.0.1:8000`.
+Documentación interactiva disponible en `http://127.0.0.1:8000/docs`.
 
-Servidor:
+---
 
-http://127.0.0.1:8000
+### 🎨 Frontend
 
+**1. Instalar dependencias**
 
-Documentación API:
-
-http://127.0.0.1:8000/docs
-
-🎨 Frontend Setup
-
-Ir a la carpeta:
-
+```bash
 cd Frontend
-
-6️⃣ Instalar dependencias
 npm install
+```
 
-7️⃣ Ejecutar frontend
+**2. Iniciar el servidor de desarrollo**
+
+```bash
 npm run dev
+```
 
+La aplicación estará disponible en `http://localhost:5173`.
 
-Servidor:
+> El frontend está configurado con un proxy en `vite.config.ts` que redirige `/api/*` → `http://127.0.0.1:8000`, por lo que no necesitas configurar CORS manualmente durante el desarrollo.
 
-http://localhost:5173
+---
 
-🔄 Flujo de Datos
-Usuario
-   ↓
-Frontend (Svelte)
-   ↓
-API (FastAPI)
-   ↓
-MongoDB
+## 🌐 Endpoints de la API
 
-📦 Endpoints Principales
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/` | Health check |
+| `GET` | `/daily` | Metadata del reto diario (sin spoilers) |
+| `POST` | `/guess` | Enviar un intento de adivinanza |
+| `GET` | `/characters/search?q=` | Autocompletado de nombres |
+| `GET` | `/characters` | Lista completa de personajes |
+| `GET` | `/characters/{nombre}` | Detalle de un personaje |
+| `GET` | `/meta/fields` | Valores únicos por campo |
+| `GET` | `/meta/arcs` | Orden canónico de arcos |
+| `GET` | `/daily/reveal` | ⚠️ [Debug] Revela el personaje del día |
 
-Ejemplos:
+---
 
-GET /characters
-GET /characters/{name}
-POST /guess
-GET /random-character
+## 🛠️ Stack tecnológico
 
-🧠 Lógica del Juego
+### Backend
+- **[FastAPI](https://fastapi.tiangolo.com/)** — Framework web asíncrono de alto rendimiento
+- **[Motor](https://motor.readthedocs.io/)** — Driver asíncrono para MongoDB
+- **[Pydantic](https://docs.pydantic.dev/)** — Validación de datos y esquemas
+- **[Uvicorn](https://www.uvicorn.org/)** — Servidor ASGI
 
-Comparación de atributos:
+### Frontend
+- **[SvelteKit 2](https://kit.svelte.dev/)** con **Svelte 5** (Runes API)
+- **[TypeScript](https://www.typescriptlang.org/)** — Tipado estático
+- **[Tailwind CSS 4](https://tailwindcss.com/)** + CSS personalizado con animaciones
+- **[Vite 7](https://vitejs.dev/)** — Bundler y servidor de desarrollo
 
-Resultado	Significado
-Verde	Correcto
-Amarillo	Parcial
-Rojo	Incorrecto
-↑	Mayor
-↓	Menor
-📊 Funcionalidades Futuras
-Ranking diario
-Racha de victorias
-Estadísticas
-Modo infinito
-Sistema de login
-Guardado en base de datos
+### Base de datos
+- **[MongoDB Atlas](https://www.mongodb.com/atlas)** — Base de datos en la nube (tier gratuito, 512 MB)
 
-Estas funcionalidades forman parte del diseño original del proyecto.
+---
 
-🧪 Testing
+## 🧠 Lógica de comparación
 
-Ejecutar pruebas:
+El motor de comparación en `Backend/logic.py` evalúa cada atributo con una estrategia distinta:
 
-pytest
+```python
+# Campos exactos (género, reino, orden)
+→ "correct" si coincide, "incorrect" si no
 
-🧰 Scripts útiles
+# Campos numéricos (altura)
+→ "correct" | "higher" (↑) | "lower" (↓)
 
-Actualizar dependencias:
+# Campos de lista (tipo_magia, raza, atributos)
+→ "correct" si todas coinciden
+→ "partial" si hay intersección
+→ "incorrect" si no hay ninguna coincidencia
 
-pip freeze > requirements.txt
+# Campo de arco
+→ Comparación por posición en orden cronológico canónico
+→ "correct" | "higher" (más tarde) | "lower" (antes)
+```
 
-📌 Roadmap
-Versión 1.0
- Backend básico
- MongoDB
- Módulo 1 funcional
- Frontend con animaciones
-Versión 2.0
- GIF mode
- Frases
- Imagen borrosa
- Estadísticas
-👨‍💻 Autor
+---
 
-Santy
+## 🗺️ Roadmap
 
-Desarrollador del proyecto Black Cloverdle
+### v1.0 — MVP ✅
+- [x] Backend con FastAPI y MongoDB
+- [x] Módulo 1: Adivina el Personaje
+- [x] Frontend con SvelteKit y animaciones flip
+- [x] Autocompletado de personajes
+- [x] Sistema de pistas desbloqueables
+- [x] Personaje diario determinista
 
-📜 Licencia
+### v2.0 — En desarrollo 🔜
+- [ ] Módulo 2: Adivina el hechizo (GIF progresivo)
+- [ ] Módulo 3: Adivina la frase
+- [ ] Módulo 4: Adivina el mago (imagen progresiva)
+- [ ] Estadísticas de victorias y rachas
+- [ ] Modo infinito
+- [ ] Sistema de autenticación y rankings
 
-MIT License
+---
 
-🧙‍♂️ Créditos
+## 👨‍💻 Autor
 
-Inspirado en:
+Desarrollado con 🖤 por **Santy** — fan del anime y del universo de Black Clover.
 
-Wordle
-Narutodle
-Anime: Black Clover
-⭐ Recomendación
+---
 
-Si subes esto a GitHub:
+## 📜 Licencia
 
-Añade imágenes del juego
-Añade GIFs
-Añade capturas del frontend
+[MIT License](LICENSE) — libre para usar, modificar y distribuir.
 
-Eso hace que el repo se vea mucho más profesional.
+---
+
+<div align="center">
+
+*"No importa qué tipo de magia tengas. Lo que importa es hasta dónde llegas con ella."*
+— **Yami Sukehiro**
+
+**❁ ¡Que el grimorio te guíe! ❁**
+
+</div>
