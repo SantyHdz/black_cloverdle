@@ -270,10 +270,10 @@
 
     <!-- Filas de intentos -->
     <div class="guesses-list">
-      {#each guesses as comparison, i}
-        <GuessRow {comparison} attemptNumber={i + 1} />
-      {/each}
-    </div>
+        {#each [...guesses].toReversed() as comparison, i (guesses.length - i)}
+            <GuessRow {comparison} attemptNumber={guesses.length - i} />
+        {/each}
+</div>
 
     <!-- ── Pantalla de fin de juego ──────────────────────────────────────── -->
     {#if gameOver}
@@ -297,7 +297,7 @@
 
   <!-- ── Leyenda de colores ─────────────────────────────────────────────────── -->
 	<div class="legend-wrapper">
-		<button class="col-head" on:click={() =>
+		<button class="col-head" onclick={() =>
 			(showLegend = !showLegend)}>
 			<span class="col-head-label">Indicadores de color</span>
 			<span class="col-head-arrow" class:open={"showLegend"}>▼</span>

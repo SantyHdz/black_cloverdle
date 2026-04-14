@@ -1,43 +1,32 @@
 ﻿<script lang="ts">
 	import FlipCard from './FlipCard.svelte';
-	import { slide, fade, scale } from 'svelte/transition'; // FIX: agregar scale
-	import './GuessRow.css';
+import { slide, fade, scale } from 'svelte/transition';
+import './GuessRow.css';
 
-	const props = $props<{
-		comparison: Record<string, any>;
-		attemptNumber?: number;
-	}>();
+const { comparison, attemptNumber = 1 } = $props<{
+    comparison: Record<string, any>;
+    attemptNumber?: number;
+}>();
 
-	const comparison = props.comparison;
-	const attemptNumber = props.attemptNumber ?? 1;
+const COLUMNS: { key: string; label: string }[] = [
+    { key: 'nombre',     label: 'Nombre'   },
+    { key: 'genero',     label: 'Género'   },
+    { key: 'atributos',  label: 'Atributos'},
+    { key: 'raza',       label: 'Raza'     },
+    { key: 'altura',     label: 'Altura'   },
+    { key: 'reino',      label: 'Reino'    },
+    { key: 'orden',      label: 'Orden'    },
+    { key: 'tipo_magia', label: 'Magia'    },
+    { key: 'arco',       label: 'Arco'     }
+];
 
-	// Columnas
-	const COLUMNS: { key: string; label: string }[] = [
-		{ key: 'nombre', label: 'Nombre' },
-		{ key: 'genero', label: 'Género' },
-		{ key: 'atributos', label: 'Atributos' },
-		{ key: 'raza', label: 'Raza' },
-		{ key: 'altura', label: 'Altura' },
-		{ key: 'reino', label: 'Reino' },
-		{ key: 'orden', label: 'Orden' },
-		{ key: 'tipo_magia', label: 'Magia' },
-		{ key: 'arco', label: 'Arco' }
-	];
+const BASE_DELAY = 80;
+const ATTEMPT_EXTRA = 0;
 
-	// Delay
-	const BASE_DELAY = 80;
-	const ATTEMPT_EXTRA = 0;
-
-	// estoy intentando generar una ruta automaticamente para la imagen del personaje basado en su nombre.
-	function getCharacterImage(name: string) {
-		if (!name) return '';
-
-		return `/images/characters/${
-			name
-				.toLowerCase()
-				.replaceAll(' ', '_')
-		}.webp`;
-	}
+function getCharacterImage(name: string) {
+    if (!name) return '';
+    return `/images/characters/${name.toLowerCase().replaceAll(' ', '_')}.webp`;
+}
 </script>
 
 <div
