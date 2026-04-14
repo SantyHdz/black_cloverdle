@@ -107,7 +107,7 @@
 
 
 <svelte:head>
-  <title>Black Cloverdle — Adivina el Personaje</title>
+  <title>BlackCloverdle — Adivina el Personaje</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
@@ -144,6 +144,7 @@
       <p class="header-eyebrow" in:fade={{ duration: 400, delay: 100 }}>El reto de hoy</p>
       <h1 class="header-title" in:scale={{ duration: 500, delay: 150 }}>
         <span class="title-black">BLACK</span>
+		<span class="title-symbol">❁</span>
         <span class="title-clover">CLOVER</span>
         <span class="title-dle">DLE</span>
       </h1>
@@ -295,44 +296,45 @@
   </section>
 
   <!-- ── Leyenda de colores ─────────────────────────────────────────────────── -->
-  <div class="legend-wrapper">
-  <button class="col-head" onclick={() => (showLegend = !showLegend)}>
-    <span class="col-head-label">Indicadores de color</span>
-    <span class="col-head-arrow" class:open={showLegend}>▼</span>
-  </button>
+	<div class="legend-wrapper">
+		<button class="col-head" on:click={() =>
+			(showLegend = !showLegend)}>
+			<span class="col-head-label">Indicadores de color</span>
+			<span class="col-head-arrow" class:open={"showLegend"}>▼</span>
+		</button>
 
-  {#if showLegend}
-    <div class="legend" role="list">
-      <div class="legend-item" role="listitem">
-        <div class="legend-swatch swatch--correct"></div>
-        <div class="legend-item-text">
-          <strong>Correcto</strong>
-          <span>El valor coincide exactamente</span>
-        </div>
-      </div>
-      <div class="legend-item" role="listitem">
-        <div class="legend-swatch swatch--partial"></div>
-        <div class="legend-item-text">
-          <strong>Parcial</strong>
-          <span>Comparte al menos un valor (listas)</span>
-        </div>
-      </div>
-      <div class="legend-item" role="listitem">
-        <div class="legend-swatch swatch--incorrect"></div>
-        <div class="legend-item-text">
-          <strong>Incorrecto</strong>
-          <span>No hay coincidencia</span>
-        </div>
-      </div>
-      <div class="legend-item" role="listitem">
-        <div class="legend-swatch swatch--directional"></div>
-        <div class="legend-item-text">
-          <strong>↑ / ↓</strong>
-          <span>El objetivo es mayor/menor o anterior/posterior</span>
-        </div>
-      </div>
-    </div>
-  {/if}
-</div>
+		{#if showLegend}
+		<div class="legend" role="list">
+			<div class="legend-item" role="listitem">
+				<div class="legend-swatch swatch--correct"></div>
+				<div class="legend-item-text">
+					<strong>Correcto</strong>
+					<span>El valor coincide exactamente</span>
+				</div>
+			</div>
+			<div class="legend-item" role="listitem">
+				<div class="legend-swatch swatch--partial"></div>
+				<div class="legend-item-text">
+					<strong>Parcial</strong>
+					<span>Comparte al menos un valor (listas)</span>
+				</div>
+			</div>
+			<div class="legend-item" role="listitem">
+				<div class="legend-swatch swatch--incorrect"></div>
+				<div class="legend-item-text">
+					<strong>Incorrecto</strong>
+					<span>No hay coincidencia</span>
+				</div>
+			</div>
+			<div class="legend-item" role="listitem">
+				<div class="legend-swatch swatch--directional"></div>
+				<div class="legend-item-text">
+					<strong>↑ / ↓</strong>
+					<span>El objetivo es mayor/menor o anterior/posterior</span>
+				</div>
+			</div>
+		</div>
+		{/if}
+	</div>
 
 </main>
